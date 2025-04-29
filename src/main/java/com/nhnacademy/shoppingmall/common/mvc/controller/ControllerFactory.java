@@ -1,9 +1,13 @@
 package com.nhnacademy.shoppingmall.common.mvc.controller;
 
+import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
+import com.nhnacademy.shoppingmall.common.mvc.exception.ControllerNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,6 +18,8 @@ public class ControllerFactory {
     public static final String CONTEXT_CONTROLLER_FACTORY_NAME="CONTEXT_CONTROLLER_FACTORY";
     private final ConcurrentMap<String, Object> beanMap = new ConcurrentHashMap<>();
     public void initialize(Set<Class<?>> c, ServletContext ctx){
+
+        log.debug("initialize() called with controller classes: {}", c);
 
         if(Objects.isNull(c)){
             log.info("Controller not found");
@@ -32,6 +38,28 @@ public class ControllerFactory {
          *  즉 /index.do, /main.do -> IndexController로 맵핑 됩니다.
          */
 
+        for(Class<?> clazz : c){
+            log.debug("Processing controller class: {}", clazz.getName());
+            if(!clazz.isAnnotationPresent(RequestMapping.class)){
+                continue;
+            }
+            RequestMapping requestMapping = clazz.getAnnotation(RequestMapping.class);
+            if(Objects.nonNull(requestMapping)) {
+                String method = requestMapping.method().name();
+                String[] path = requestMapping.value();
+                try{
+                    Object controllerInstanace = clazz.getDeclaredConstructor().newInstance();
+                    for(String pathItem : path){
+                        String key = getKey(method, pathItem);
+                        beanMap.put(key, controllerInstanace);
+                    }
+                }catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        }
+        ctx.setAttribute(CONTEXT_CONTROLLER_FACTORY_NAME, this);
 
         //#todo5-2 ctx(ServletContext)에  attribute를 추가합니다. -> key : CONTEXT_CONTROLLER_FACTORY_NAME, value : ControllerFactory
 
@@ -39,27 +67,32 @@ public class ControllerFactory {
 
     private Object getBean(String key){
         //todo#5-3 beanMap에서 controller 객체를 반환 합니다.
+        Object bean = beanMap.get(key);
+        if(Objects.isNull(bean)){
+            throw new ControllerNotFoundException("Controller not found");
+        }
 
-        return null;
+        return bean;
     }
 
     public Object getController(HttpServletRequest request){
         //todo#5-4 request의 method, servletPath를 이용해서 Controller 객체를 반환합니다.
+        String method = request.getMethod();
+        String path = request.getServletPath();
 
-        return null;
+        return getController(method, path);
     }
 
     public Object getController(String method, String path){
         //todo#5-5 method, path를 이용해서 Controller 객체를 반환 합니다.
-
-        return null;
+        String key = getKey(method, path);
+        return getBean(key);
     }
 
     private String getKey(String method, String path){
         //todo#5-6  {method}-{key}  형식으로 Key를 반환 합니다.
         //ex GET-/index.do
         //ex POST-/loginAction.do
-
-        return "";
+        return method + "-" + path;
     }
 }

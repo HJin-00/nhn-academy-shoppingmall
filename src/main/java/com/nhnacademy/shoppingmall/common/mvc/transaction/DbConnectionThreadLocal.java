@@ -1,8 +1,11 @@
 package com.nhnacademy.shoppingmall.common.mvc.transaction;
 
+import com.nhnacademy.shoppingmall.common.util.DbUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Objects;
 
 @Slf4j
 public class DbConnectionThreadLocal {
@@ -12,10 +15,16 @@ public class DbConnectionThreadLocal {
     public static void initialize(){
 
         //todo#2-1 - connection pool에서 connectionThreadLocal에 connection을 할당합니다.
-
         //todo#2-2 connectiond의 Isolation level을 READ_COMMITED를 설정 합니다.
-
         //todo#2-3 auto commit 을 false로 설정합니다.
+        try{
+            Connection connection = DbUtils.getDataSource().getConnection();
+            connectionThreadLocal.set(connection);
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -33,6 +42,27 @@ public class DbConnectionThreadLocal {
 
     public static void reset(){
 
+        Connection connection = getConnection();
+        if(Objects.nonNull(connection)){
+            try{
+                if(getSqlError()){
+                    connection.rollback();
+                }
+                else{
+                    connection.commit();
+                }
+            }catch (SQLException e){
+                throw new RuntimeException(e);
+            }finally{
+                try{
+                    connection.close();
+                }catch (SQLException e){
+                    throw new RuntimeException(e);
+                }
+                connectionThreadLocal.remove();
+                sqlErrorThreadLocal.remove();
+            }
+        }
         //todo#2-4 사용이 완료된 connection은 close를 호출하여 connection pool에 반환합니다.
 
         //todo#2-5 getSqlError() 에러가 존재하면 rollback 합니다.

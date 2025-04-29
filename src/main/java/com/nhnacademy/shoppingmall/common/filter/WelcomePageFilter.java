@@ -11,12 +11,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-
+@WebFilter(urlPatterns = {"/"},initParams = {@WebInitParam(name = "encoding",value = "UTF-8")})
 public class WelcomePageFilter extends HttpFilter {
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         //todo#9 /요청이 오면 welcome page인 index.do redirect 합니다.
+        if("/".equals(req.getServletPath()) && !res.isCommitted()) {
+            log.debug("Welcome page");
+            res.sendRedirect(req.getContextPath() + "/index.do");
+            return;
+        }
+        chain.doFilter(req, res);
 
     }
 }
