@@ -1,7 +1,10 @@
 package com.nhnacademy.shoppingmall.user.repository;
 
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.user.domain.User;
 
+import java.awt.print.Pageable;
+import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
