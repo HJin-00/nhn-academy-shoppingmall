@@ -1,18 +1,15 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: kimhyunjin
-  Date: 2025. 4. 30.
-  Time: 오후 1:52
-  To change this template use File | Settings | File Templates.
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ taglib prefix="cfmt" uri="http://nhnacademy.com/cfmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Address Form</title>
+
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <script>
         function showSaveSuccess() {
             alert('저장이 완료되었습니다!');
@@ -22,84 +19,76 @@
             alert('삭제가 완료되었습니다!');
         }
     </script>
-    <style>
-        .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-        .form-container {
-            width: 45%;
-        }
-        .address-container {
-            width: 45%;
-        }
-        .delete-container {
-            margin-top: 20px;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
 </head>
 <body>
-<div class="container">
-    <div class="form-container">
-        <h2>주소 등록</h2>
-        <form action="/addressSave.do" method="post" onsubmit="showSaveSuccess()">
-            <input type="hidden" name="user_id" value="${sessionScope.user.userId}">
+<div class="container my-5">
+    <div class="row gx-5">
+        <!-- 주소 등록 폼 -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">주소 등록</div>
+                <div class="card-body">
+                    <form action="/addressAdd.do" method="post" onsubmit="showSaveSuccess()">
+                        <input type="hidden" name="user_id" value="${sessionScope.user.userId}">
 
-            <label for="address_name">주소 이름 (예: 집, 회사 등):</label>
-            <input type="text" id="address_name" name="address_name" value="${address.addressName}">
-            <br>
+                        <div class="mb-3">
+                            <label for="address_name" class="form-label">주소 이름 (예: 집, 회사 등):</label>
+                            <input type="text" id="address_name" name="address_name" class="form-control" value="${address.addressName}">
+                        </div>
 
-            <label for="address_detail">상세주소:</label>
-            <input type="text" id="address_detail" name="address_detail" value="${address.addressDetail}">
-            <br>
+                        <div class="mb-3">
+                            <label for="address_detail" class="form-label">상세주소:</label>
+                            <input type="text" id="address_detail" name="address_detail" class="form-control" value="${address.addressDetail}">
+                        </div>
 
-            <input type="submit" value="저장">
-        </form>
+                        <button type="submit" class="btn btn-success w-100">저장</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 주소 목록 테이블 -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">주소 목록</div>
+                <div class="card-body">
+                    <table class="table table-bordered text-center align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>주소 이름</th>
+                            <th>상세 주소</th>
+                            <th>등록일</th>
+                            <th>삭제</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="address" items="${addressList}">
+                            <tr>
+                                <td>${address.addressName}</td>
+                                <td>${address.addressDetail}</td>
+                                <td>${cfmt:formatDate(address.createdAt, 'yyyy-MM-dd HH:mm:ss')}</td>
+                                <td>
+                                    <form action="/addressDelete.do" method="post"
+                                          onsubmit="return confirm('정말 삭제하시겠습니까?')"
+                                          style="display:inline;">
+                                        <input type="hidden" name="user_id" value="${sessionScope.user.userId}">
+                                        <input type="hidden" name="address_name" value="${address.addressName}">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">삭제</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div class="address-container">
-        <h2>주소 목록</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>주소이름</th>
-                <th>상세주소</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="address" items="${addressList}">
-                <tr>
-                    <td>${address.addressName}</td>
-                    <td>${address.addressDetail}</td>
 
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </div>
 </div>
 
-<div class="delete-container">
-    <h2>주소 삭제</h2>
-    <form action="/addressDelete.do" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
-        <input type="hidden" name="user_id" value="${sessionScope.user.userId}">
-        <label for="address_id">삭제할 주소 ID:</label>
-        <input type="text" id="address_id" name="address_id" required>
-        <input type="submit" value="삭제">
-    </form>
-</div>
-
+<!-- Bootstrap 5 JS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
