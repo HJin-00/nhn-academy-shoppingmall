@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" session="false" trimDirectiveWhitespaces="true" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" session="true" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
@@ -31,17 +31,28 @@
 
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li><a href="/index.do" class="nav-link px-2 text-secondary">Home</a></li>
-                        <li><a href="#" class="nav-link px-2 text-white">마이페이지</a></li>
                     </ul>
 
                     <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                         <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
                     </form>
 
-                    <div class="text-end">
-                        <a class="btn btn-outline-light me-2" href="/login.do" >로그인</a>
-                        <a class="btn btn-warning" href="/signup.do" >회원가입</a>
-                    </div>
+                    <c:choose>
+                        <c:when test="${pageContext.session != null and not empty sessionScope.user}">
+                            <div class="text-end text-white">
+                                <span>${sessionScope.user.userName}님</span>
+                                <span>(보유 포인트: <fmt:formatNumber value="${sessionScope.user.userPoint}" groupingUsed="true"/> P)</span>
+                                <a class="btn btn-outline-light ms-2" href="/mypage.do">마이페이지</a>
+                                <a class="btn btn-danger ms-2" href="/logout.do">로그아웃</a>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="text-end">
+                                <a class="btn btn-outline-light me-2" href="/login.do">로그인</a>
+                                <a class="btn btn-warning" href="/signup.do">회원가입</a>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </header>

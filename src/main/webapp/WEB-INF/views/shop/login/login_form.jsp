@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" session="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" session="true" %>
 
 <div style="margin: auto; width: 400px;">
     <div class="p-2">
@@ -21,5 +22,10 @@
             <p class="mt-5 mb-3 text-muted">© 2022-2024</p>
 
         </form>
+        <c:if test="${loginError}">
+            <div class="alert alert-danger" role="alert">
+                아이디와 비밀번호를 확인하세요
+            </div>
+        </c:if>
     </div>
 </div>

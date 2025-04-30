@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
         //todo#4-5 로그인 구현, userId, userPassword로 일치하는 회원 조회
         User user = userRepository.findByUserIdAndUserPassword(userId,userPassword).orElseThrow(()->new UserNotFoundException("User does not exist"));
         userRepository.updateLatestLoginAtByUserId(userId, LocalDateTime.now());
+        user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException("User does not exist"));
         return user;
     }
 

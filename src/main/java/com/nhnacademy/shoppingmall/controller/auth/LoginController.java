@@ -16,10 +16,15 @@ public class LoginController implements BaseController {
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         //todo#13-1 session이 존재하고 로그인이 되어 있다면 redirect:/index.do 반환 합니다.
         HttpSession session = req.getSession(false);
-        boolean isLogin = (session.getAttribute("user") != null) && (session !=null);
+        boolean isLogin = (session !=null) && (session.getAttribute("user") != null);
         if(isLogin) {
             return "redirect:/index.do";
         }
+        if (session != null && session.getAttribute("loginError") != null) {
+            req.setAttribute("loginError", session.getAttribute("loginError"));
+            session.removeAttribute("loginError");
+        }
+
         return "shop/login/login_form";
     }
 }

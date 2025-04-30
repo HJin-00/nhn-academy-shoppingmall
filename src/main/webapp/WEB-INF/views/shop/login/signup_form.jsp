@@ -37,8 +37,15 @@
 
       <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">회원가입</button>
 
+
+
       <p class="mt-5 mb-3 text-muted">© 2022-2024</p>
 
     </form>
+    <c:if test="${not empty signupError}">
+      <div class="alert alert-danger mt-3" role="alert">
+          ${signupError}
+      </div>
+    </c:if>
   </div>
 </div>
