@@ -1,6 +1,6 @@
-package com.nhnacademy.shoppingmall.address.repository;
+package com.nhnacademy.shoppingmall.user.repository;
 
-import com.nhnacademy.shoppingmall.address.domain.Address;
+import com.nhnacademy.shoppingmall.user.domain.Address;
 
 import java.util.List;
 

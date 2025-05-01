@@ -42,8 +42,8 @@ CREATE TABLE `address` (
                            `address_detail` varchar(200) DEFAULT NULL COMMENT '상세주소',
                            PRIMARY KEY (`address_id`),
                            KEY `FK_users_TO_address_1` (`user_id`),
-                           CONSTRAINT `FK_users_TO_address_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='주소';
+                           CONSTRAINT `fk_address_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='주소'
 
 CREATE TABLE `point_history` (
                                  `point_history_id` bigint NOT NULL AUTO_INCREMENT COMMENT '포인트 ID',
@@ -53,8 +53,8 @@ CREATE TABLE `point_history` (
                                  `created_at` datetime NOT NULL COMMENT '포인트이력생성일',
                                  PRIMARY KEY (`point_history_id`),
                                  KEY `FK_users_TO_point_history_1` (`user_id`),
-                                 CONSTRAINT `FK_users_TO_point_history_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='포인트내역';
+                                 CONSTRAINT `fk_point_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='포인트내역'
 
 CREATE TABLE `cart` (
                         `cart_id` bigint NOT NULL AUTO_INCREMENT COMMENT '장바구니ID',

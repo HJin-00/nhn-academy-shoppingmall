@@ -1,4 +1,4 @@
-package com.nhnacademy.shoppingmall.address.domain;
+package com.nhnacademy.shoppingmall.user.domain;
 
 import lombok.Getter;
 import lombok.Setter;

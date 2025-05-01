@@ -1,7 +1,7 @@
-package com.nhnacademy.shoppingmall.address.repository.impl;
+package com.nhnacademy.shoppingmall.user.repository.impl;
 
-import com.nhnacademy.shoppingmall.address.domain.Address;
-import com.nhnacademy.shoppingmall.address.repository.AddressRepository;
+import com.nhnacademy.shoppingmall.user.domain.Address;
+import com.nhnacademy.shoppingmall.user.repository.AddressRepository;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
 
 import java.sql.*;

@@ -1,8 +1,8 @@
-package com.nhnacademy.shoppingmall.address.service.impl;
+package com.nhnacademy.shoppingmall.user.service.impl;
 
-import com.nhnacademy.shoppingmall.address.domain.Address;
-import com.nhnacademy.shoppingmall.address.repository.AddressRepository;
-import com.nhnacademy.shoppingmall.address.service.AddressService;
+import com.nhnacademy.shoppingmall.user.domain.Address;
+import com.nhnacademy.shoppingmall.user.repository.AddressRepository;
+import com.nhnacademy.shoppingmall.user.service.AddressService;
 
 import java.util.List;
 

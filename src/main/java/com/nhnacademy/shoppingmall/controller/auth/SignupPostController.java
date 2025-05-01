@@ -2,10 +2,14 @@ package com.nhnacademy.shoppingmall.controller.auth;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
+import com.nhnacademy.shoppingmall.user.domain.Point;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import com.nhnacademy.shoppingmall.user.exception.UserAlreadyExistsException;
+import com.nhnacademy.shoppingmall.user.repository.impl.PointRepositoryImpl;
 import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
+import com.nhnacademy.shoppingmall.user.service.PointService;
 import com.nhnacademy.shoppingmall.user.service.UserService;
+import com.nhnacademy.shoppingmall.user.service.impl.PointServiceImpl;
 import com.nhnacademy.shoppingmall.user.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +22,7 @@ import java.util.Objects;
 @RequestMapping(method = RequestMapping.Method.POST,value = "/signupAction.do")
 public class SignupPostController implements BaseController {
     private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+    private final PointService pointService = new PointServiceImpl(new PointRepositoryImpl(), new UserRepositoryImpl());
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         try {
@@ -36,6 +41,10 @@ public class SignupPostController implements BaseController {
             }
 
             userService.saveUser(user);
+            Point joinBonus = new Point(
+                    userId,points, Point.PointDescription.EARN,LocalDateTime.now()
+            );
+            pointService.save(joinBonus);
             log.debug("{} 생성완료", user.getUserId());
 
             return "shop/main/index";
