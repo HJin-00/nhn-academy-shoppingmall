@@ -23,7 +23,14 @@
       <p>${product.productDescription}</p>
       <p><strong>재고:</strong> ${product.stock} 개</p>
 
-      <a href="/addToCart.do?productId=${product.productId}" class="btn btn-primary">장바구니에 담기</a>
+      <form action="/cart/add.do" method="post">
+        <input type="hidden" name="productId" value="${product.productId}" />
+        <div class="mb-3">
+          <label for="quantity" class="form-label"><strong>수량:</strong></label>
+          <input type="number" id="quantity" name="quantity" value="1" min="1" max="${product.stock}" class="form-control" style="width: 100px;" />
+        </div>
+        <button type="submit" class="btn btn-primary">장바구니에 담기</button>
+      </form>
     </div>
   </div>
 </div>

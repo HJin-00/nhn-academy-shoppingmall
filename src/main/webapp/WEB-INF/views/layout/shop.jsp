@@ -39,6 +39,7 @@
                                 <span>${sessionScope.user.userName}님</span>
                                 <span>(보유 포인트: <fmt:formatNumber value="${sessionScope.user.userPoint}" groupingUsed="true"/> P)</span>
                                 <a class="btn btn-outline-light ms-2" href="/mypage.do">마이페이지</a>
+                                <a class="btn btn-outline-info ms-2" href="/cart/view.do">장바구니</a>
                                 <a class="btn btn-danger ms-2" href="/logout.do">로그아웃</a>
                             </div>
                         </c:when>
@@ -67,7 +68,7 @@
                 <p class="float-end mb-1">
                     <a href="#">Back to top</a>
                 </p>
-                <p class="mb-1">shoppingmall example is © nhnacademy.com</p>
+                <p class="mb-1">shoppingmall made by Hjin</p>
             </div>
         </footer>
 

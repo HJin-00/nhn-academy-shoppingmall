@@ -21,6 +21,8 @@ public interface ProductRepository {
 
     long count();
 
+    int updateStock(int productId, int newstock);
+
 
 
 

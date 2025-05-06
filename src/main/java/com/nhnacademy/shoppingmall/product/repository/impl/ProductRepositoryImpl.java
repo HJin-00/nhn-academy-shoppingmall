@@ -159,6 +159,18 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         return 0;
     }
+    @Override
+    public int updateStock(int productId, int newStock) {
+        String sql = "UPDATE products SET stock = ? WHERE product_id = ?";
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        try (PreparedStatement psmt = connection.prepareStatement(sql)) {
+            psmt.setInt(1, newStock);
+            psmt.setInt(2, productId);
+            return psmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("재고 업데이트 실패", e);
+        }
+    }
 
     private Product mapRow(ResultSet rs) throws SQLException {
         Product product = new Product();

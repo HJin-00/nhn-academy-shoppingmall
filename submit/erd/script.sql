@@ -19,6 +19,7 @@ CREATE TABLE `products` (
                             `product_description` text NOT NULL COMMENT '상품 설명',
                             `created_at` datetime NOT NULL COMMENT '등록일',
                             `updated_at` datetime DEFAULT NULL COMMENT '상품수정일',
+                            `stock` int NOT NULL DEFAULT '0' COMMENT '재고 수량',
                             PRIMARY KEY (`product_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='상품'
 
