@@ -1,4 +1,4 @@
-package com.nhnacademy.shoppingmall.controller.userpage;
+package com.nhnacademy.shoppingmall.controller.userpage.address;
 
 import com.nhnacademy.shoppingmall.user.domain.Address;
 import com.nhnacademy.shoppingmall.user.repository.impl.AddressRepositoryImpl;

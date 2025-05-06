@@ -14,13 +14,13 @@ CREATE TABLE `products` (
                             `product_id` bigint NOT NULL AUTO_INCREMENT COMMENT '상품ID',
                             `product_name` varchar(200) NOT NULL COMMENT '상품이름',
                             `price` int NOT NULL COMMENT '상품가격',
-                            `thumbnail_image` varchar(500) NOT NULL DEFAULT 'no-image' COMMENT '썸네일이미지',
-                            `detail_image` varchar(500) NOT NULL COMMENT '상세이미지',
+                            `thumbnail_image` varchar(500) DEFAULT NULL,
+                            `detail_image` varchar(500) DEFAULT NULL,
                             `product_description` text NOT NULL COMMENT '상품 설명',
                             `created_at` datetime NOT NULL COMMENT '등록일',
                             `updated_at` datetime DEFAULT NULL COMMENT '상품수정일',
                             PRIMARY KEY (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='상품';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='상품'
 
 CREATE TABLE `orders` (
                           `order_id` bigint NOT NULL AUTO_INCREMENT COMMENT '주문ID',
@@ -102,6 +102,6 @@ CREATE TABLE `product_category` (
                                     `category_id` bigint NOT NULL COMMENT '카테고리ID',
                                     PRIMARY KEY (`product_id`,`category_id`),
                                     KEY `FK_category_TO_product_category_1` (`category_id`),
-                                    CONSTRAINT `FK_category_TO_product_category_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`),
-                                    CONSTRAINT `FK_products_TO_product_category_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='카테고리,상품매핑테이블';
+                                    CONSTRAINT `fk_product_category_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE,
+                                    CONSTRAINT `fk_product_category_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='카테고리,상품매핑테이블'

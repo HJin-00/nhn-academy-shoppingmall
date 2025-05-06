@@ -1,4 +1,4 @@
-package com.nhnacademy.shoppingmall.controller.userpage;
+package com.nhnacademy.shoppingmall.controller.userpage.userinfo;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;

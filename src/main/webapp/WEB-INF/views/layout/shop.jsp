@@ -33,10 +33,6 @@
                         <li><a href="/index.do" class="nav-link px-2 text-secondary">Home</a></li>
                     </ul>
 
-                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                        <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-                    </form>
-
                     <c:choose>
                         <c:when test="${pageContext.session != null and not empty sessionScope.user}">
                             <div class="text-end text-white">

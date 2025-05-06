@@ -33,7 +33,7 @@
   <c:if test="${sessionScope.user != null && sessionScope.user.userAuth == 'ROLE_ADMIN'}">
     <div class="col-md-4 mb-3">
       <div class="list-group">
-        <a href="/adminPage.do" class="list-group-item">관리자 페이지 접속</a>
+        <a href="/admin/admin.do" class="list-group-item">관리자 페이지 접속</a>
       </div>
     </div>
   </c:if>

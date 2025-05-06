@@ -1,4 +1,4 @@
-package com.nhnacademy.shoppingmall.controller.userpage;
+package com.nhnacademy.shoppingmall.controller.userpage.userinfo;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
@@ -31,10 +31,10 @@ public class UserUpdatePostController implements BaseController {
         String userName = req.getParameter("user_name");
         String password = req.getParameter("user_password");
         String userBirth = req.getParameter("user_birth");
-        User.Auth userAuth = User.Auth.valueOf(req.getParameter("user_auth"));
 
         int userPoint = user.getUserPoint();
         String userId = user.getUserId();
+        User.Auth userAuth = user.getUserAuth();
         LocalDateTime createdAt = user.getCreatedAt();
         LocalDateTime LatestLoginAt = user.getLatestLoginAt();
 

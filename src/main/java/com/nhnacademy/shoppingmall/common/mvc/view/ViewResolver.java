@@ -1,4 +1,10 @@
 package com.nhnacademy.shoppingmall.common.mvc.view;
+
+import com.nhnacademy.shoppingmall.user.domain.User;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Objects;
+
 public class ViewResolver {
 
     public static final String DEFAULT_PREFIX="/WEB-INF/views/";
@@ -42,12 +48,12 @@ public class ViewResolver {
     }
 
     public String getLayOut(String viewName){
-
+        System.out.println("viewName:"+viewName);
         /*todo#6-4 viewName에
            /admin/경로가 포함되었다면 DEFAULT_ADMIN_LAYOUT 반환 합니다.
            /admin/경로가 포함되어 있지않다면 DEFAULT_SHOP_LAYOUT 반환 합니다.
         */
-        if(viewName.contains("/admin/")){
+        if(viewName.contains("admin")){
             return DEFAULT_ADMIN_LAYOUT;
         }
 
