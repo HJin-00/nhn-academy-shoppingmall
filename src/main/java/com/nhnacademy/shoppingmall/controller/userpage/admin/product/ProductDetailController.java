@@ -11,6 +11,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,19 +30,21 @@ public class ProductDetailController implements BaseController {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("viewedProducts".equals(cookie.getName())) {
-                    // 문자열 리스트 → int 리스트로 파싱
-                    List<Integer> ids = Arrays.stream(cookie.getValue().split(","))
+
+                    String decoded = URLDecoder.decode(cookie.getValue(), StandardCharsets.UTF_8);
+
+
+                    List<Integer> ids = Arrays.stream(decoded.split(","))
                             .map(Integer::parseInt)
                             .collect(Collectors.toList());
 
-                    ids.removeIf(id -> id == productId); // 중복 제거
-                    ids.add(0, productId); // 최신 ID 맨 앞에 추가
+                    ids.removeIf(id -> id == productId);
+                    ids.add(0, productId);
 
                     if (ids.size() > 5) {
-                        ids = ids.subList(0, 5); // 최대 5개 유지
+                        ids = ids.subList(0, 5);
                     }
 
-                    // 다시 문자열로 조합
                     value = ids.stream()
                             .map(String::valueOf)
                             .collect(Collectors.joining(","));
@@ -47,10 +52,14 @@ public class ProductDetailController implements BaseController {
             }
         }
 
-        Cookie viewedCookie = new Cookie("viewedProducts", value);
+
+        String encodedValue = URLEncoder.encode(value, StandardCharsets.UTF_8);
+
+        Cookie viewedCookie = new Cookie("viewedProducts", encodedValue);
         viewedCookie.setPath("/");
-        viewedCookie.setMaxAge(60 * 60 * 24 * 7); // 일주일
+        viewedCookie.setMaxAge(60 * 60 * 24 * 7); // 7일
         resp.addCookie(viewedCookie);
+
 
         Product product = productService.findById(productId).orElseThrow(()->new RuntimeException("상품이 존재하지 않습니다."));
         req.setAttribute("product", product);

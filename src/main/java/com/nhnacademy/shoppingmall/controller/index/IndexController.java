@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,13 +51,20 @@ public class IndexController implements BaseController {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("viewedProducts".equals(cookie.getName())) {
-                    String[] productIds = cookie.getValue().split(",");
-                    for (String id : productIds) {
-                        productService.findById(Integer.parseInt(id)).ifPresent(recentProducts::add);
+                    try {
+                        String decoded = URLDecoder.decode(cookie.getValue(), StandardCharsets.UTF_8);
+
+                        String[] productIds = decoded.split(",");
+                        for (String id : productIds) {
+                            productService.findById(Integer.parseInt(id)).ifPresent(recentProducts::add);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
         }
+
 
         req.setAttribute("recentViewedProducts", recentProducts);
         return "shop/main/index";
